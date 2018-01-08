@@ -13,6 +13,26 @@
 		6C1A836F2002EE3200E37F0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6C1A836E2002EE3200E37F0A /* Assets.xcassets */; };
 		6C1A83722002EE3200E37F0A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C1A83702002EE3200E37F0A /* LaunchScreen.storyboard */; };
 		6C1A837A2002EE8700E37F0A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6C1A83792002EE8700E37F0A /* GoogleService-Info.plist */; };
+		6C1A83882002EFC300E37F0A /* SF-Pro-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C1A837D2002EFC200E37F0A /* SF-Pro-Display-Bold.otf */; };
+		6C1A83892002EFC300E37F0A /* SF-Pro-Text-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C1A837E2002EFC200E37F0A /* SF-Pro-Text-Semibold.otf */; };
+		6C1A838A2002EFC300E37F0A /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C1A837F2002EFC200E37F0A /* SF-Pro-Text-Regular.otf */; };
+		6C1A838B2002EFC300E37F0A /* SF-Pro-Display-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C1A83802002EFC200E37F0A /* SF-Pro-Display-Heavy.otf */; };
+		6C1A838C2002EFC300E37F0A /* SF-Pro-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C1A83812002EFC200E37F0A /* SF-Pro-Display-Regular.otf */; };
+		6C1A838D2002EFC300E37F0A /* SF-Pro-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C1A83822002EFC200E37F0A /* SF-Pro-Display-Semibold.otf */; };
+		6C1A838E2002EFC300E37F0A /* SF-Pro-Text-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C1A83832002EFC300E37F0A /* SF-Pro-Text-Heavy.otf */; };
+		6C1A838F2002EFC300E37F0A /* SF-Pro-Text-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C1A83842002EFC300E37F0A /* SF-Pro-Text-Bold.otf */; };
+		6C1A83902002EFC300E37F0A /* SF-Pro-Text-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C1A83852002EFC300E37F0A /* SF-Pro-Text-Medium.otf */; };
+		6C1A83912002EFC300E37F0A /* SF-Pro-Display-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C1A83862002EFC300E37F0A /* SF-Pro-Display-Medium.otf */; };
+		6C1A83922002EFC300E37F0A /* SF-Pro-Display-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C1A83872002EFC300E37F0A /* SF-Pro-Display-Black.otf */; };
+		6C1A83942002EFD700E37F0A /* Theme.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6C1A83932002EFD700E37F0A /* Theme.xcassets */; };
+		6C1A83962002F0CF00E37F0A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1A83952002F0CF00E37F0A /* Extensions.swift */; };
+		6C1A839B2002F10000E37F0A /* MenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1A839A2002F10000E37F0A /* MenuVC.swift */; };
+		6C1A839D2002F11A00E37F0A /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1A839C2002F11A00E37F0A /* LoginVC.swift */; };
+		6C1A839F2002F13A00E37F0A /* SignupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1A839E2002F13A00E37F0A /* SignupVC.swift */; };
+		6C1A83A12002F17200E37F0A /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1A83A02002F17200E37F0A /* GradientView.swift */; };
+		6C1A83A32002F18A00E37F0A /* RoundedShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1A83A22002F18A00E37F0A /* RoundedShadowButton.swift */; };
+		6C1A83A52002F23E00E37F0A /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1A83A42002F23E00E37F0A /* MainVC.swift */; };
+		6C1A83A72002F9CA00E37F0A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C1A83A62002F9CA00E37F0A /* MapKit.framework */; };
 		BF8D72C1524B8677C2E0CB67 /* Pods_UberClone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED9D21CE2D8787DD40968617 /* Pods_UberClone.framework */; };
 /* End PBXBuildFile section */
 
@@ -26,6 +46,26 @@
 		6C1A83712002EE3200E37F0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6C1A83732002EE3200E37F0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6C1A83792002EE8700E37F0A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6C1A837D2002EFC200E37F0A /* SF-Pro-Display-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Bold.otf"; sourceTree = "<group>"; };
+		6C1A837E2002EFC200E37F0A /* SF-Pro-Text-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Semibold.otf"; sourceTree = "<group>"; };
+		6C1A837F2002EFC200E37F0A /* SF-Pro-Text-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Regular.otf"; sourceTree = "<group>"; };
+		6C1A83802002EFC200E37F0A /* SF-Pro-Display-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Heavy.otf"; sourceTree = "<group>"; };
+		6C1A83812002EFC200E37F0A /* SF-Pro-Display-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Regular.otf"; sourceTree = "<group>"; };
+		6C1A83822002EFC200E37F0A /* SF-Pro-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Semibold.otf"; sourceTree = "<group>"; };
+		6C1A83832002EFC300E37F0A /* SF-Pro-Text-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Heavy.otf"; sourceTree = "<group>"; };
+		6C1A83842002EFC300E37F0A /* SF-Pro-Text-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Bold.otf"; sourceTree = "<group>"; };
+		6C1A83852002EFC300E37F0A /* SF-Pro-Text-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Medium.otf"; sourceTree = "<group>"; };
+		6C1A83862002EFC300E37F0A /* SF-Pro-Display-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Medium.otf"; sourceTree = "<group>"; };
+		6C1A83872002EFC300E37F0A /* SF-Pro-Display-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Black.otf"; sourceTree = "<group>"; };
+		6C1A83932002EFD700E37F0A /* Theme.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Theme.xcassets; sourceTree = "<group>"; };
+		6C1A83952002F0CF00E37F0A /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		6C1A839A2002F10000E37F0A /* MenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuVC.swift; sourceTree = "<group>"; };
+		6C1A839C2002F11A00E37F0A /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		6C1A839E2002F13A00E37F0A /* SignupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupVC.swift; sourceTree = "<group>"; };
+		6C1A83A02002F17200E37F0A /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		6C1A83A22002F18A00E37F0A /* RoundedShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedShadowButton.swift; sourceTree = "<group>"; };
+		6C1A83A42002F23E00E37F0A /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
+		6C1A83A62002F9CA00E37F0A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		E241D99D5E71CE890C9C0176 /* Pods-UberClone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberClone.release.xcconfig"; path = "Pods/Target Support Files/Pods-UberClone/Pods-UberClone.release.xcconfig"; sourceTree = "<group>"; };
 		ED9D21CE2D8787DD40968617 /* Pods_UberClone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UberClone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -35,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C1A83A72002F9CA00E37F0A /* MapKit.framework in Frameworks */,
 				BF8D72C1524B8677C2E0CB67 /* Pods_UberClone.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -63,15 +104,74 @@
 		6C1A83662002EE3200E37F0A /* UberClone */ = {
 			isa = PBXGroup;
 			children = (
+				6C1A83992002F0F200E37F0A /* Model */,
+				6C1A83982002F0ED00E37F0A /* View */,
+				6C1A83972002F0E800E37F0A /* Controller */,
 				6C1A83672002EE3200E37F0A /* AppDelegate.swift */,
 				6C1A83692002EE3200E37F0A /* ViewController.swift */,
 				6C1A836B2002EE3200E37F0A /* Main.storyboard */,
 				6C1A836E2002EE3200E37F0A /* Assets.xcassets */,
 				6C1A83702002EE3200E37F0A /* LaunchScreen.storyboard */,
+				6C1A837B2002EF4100E37F0A /* Resources */,
 				6C1A83792002EE8700E37F0A /* GoogleService-Info.plist */,
 				6C1A83732002EE3200E37F0A /* Info.plist */,
 			);
 			path = UberClone;
+			sourceTree = "<group>";
+		};
+		6C1A837B2002EF4100E37F0A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6C1A837C2002EFB000E37F0A /* SFPro */,
+				6C1A83932002EFD700E37F0A /* Theme.xcassets */,
+				6C1A83952002F0CF00E37F0A /* Extensions.swift */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		6C1A837C2002EFB000E37F0A /* SFPro */ = {
+			isa = PBXGroup;
+			children = (
+				6C1A83872002EFC300E37F0A /* SF-Pro-Display-Black.otf */,
+				6C1A837D2002EFC200E37F0A /* SF-Pro-Display-Bold.otf */,
+				6C1A83802002EFC200E37F0A /* SF-Pro-Display-Heavy.otf */,
+				6C1A83862002EFC300E37F0A /* SF-Pro-Display-Medium.otf */,
+				6C1A83812002EFC200E37F0A /* SF-Pro-Display-Regular.otf */,
+				6C1A83822002EFC200E37F0A /* SF-Pro-Display-Semibold.otf */,
+				6C1A83842002EFC300E37F0A /* SF-Pro-Text-Bold.otf */,
+				6C1A83832002EFC300E37F0A /* SF-Pro-Text-Heavy.otf */,
+				6C1A83852002EFC300E37F0A /* SF-Pro-Text-Medium.otf */,
+				6C1A837F2002EFC200E37F0A /* SF-Pro-Text-Regular.otf */,
+				6C1A837E2002EFC200E37F0A /* SF-Pro-Text-Semibold.otf */,
+			);
+			path = SFPro;
+			sourceTree = "<group>";
+		};
+		6C1A83972002F0E800E37F0A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6C1A839A2002F10000E37F0A /* MenuVC.swift */,
+				6C1A839C2002F11A00E37F0A /* LoginVC.swift */,
+				6C1A839E2002F13A00E37F0A /* SignupVC.swift */,
+				6C1A83A42002F23E00E37F0A /* MainVC.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		6C1A83982002F0ED00E37F0A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6C1A83A02002F17200E37F0A /* GradientView.swift */,
+				6C1A83A22002F18A00E37F0A /* RoundedShadowButton.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6C1A83992002F0F200E37F0A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		BB25AB3053293B84247CFDFA /* Pods */ = {
@@ -86,6 +186,7 @@
 		F312432EA2657652F2469799 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6C1A83A62002F9CA00E37F0A /* MapKit.framework */,
 				ED9D21CE2D8787DD40968617 /* Pods_UberClone.framework */,
 			);
 			name = Frameworks;
@@ -127,6 +228,11 @@
 					6C1A83632002EE3200E37F0A = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -153,10 +259,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C1A83902002EFC300E37F0A /* SF-Pro-Text-Medium.otf in Resources */,
+				6C1A83892002EFC300E37F0A /* SF-Pro-Text-Semibold.otf in Resources */,
+				6C1A83922002EFC300E37F0A /* SF-Pro-Display-Black.otf in Resources */,
 				6C1A83722002EE3200E37F0A /* LaunchScreen.storyboard in Resources */,
+				6C1A838F2002EFC300E37F0A /* SF-Pro-Text-Bold.otf in Resources */,
+				6C1A838D2002EFC300E37F0A /* SF-Pro-Display-Semibold.otf in Resources */,
+				6C1A838E2002EFC300E37F0A /* SF-Pro-Text-Heavy.otf in Resources */,
+				6C1A83912002EFC300E37F0A /* SF-Pro-Display-Medium.otf in Resources */,
+				6C1A83882002EFC300E37F0A /* SF-Pro-Display-Bold.otf in Resources */,
+				6C1A838B2002EFC300E37F0A /* SF-Pro-Display-Heavy.otf in Resources */,
 				6C1A837A2002EE8700E37F0A /* GoogleService-Info.plist in Resources */,
 				6C1A836F2002EE3200E37F0A /* Assets.xcassets in Resources */,
 				6C1A836D2002EE3200E37F0A /* Main.storyboard in Resources */,
+				6C1A83942002EFD700E37F0A /* Theme.xcassets in Resources */,
+				6C1A838C2002EFC300E37F0A /* SF-Pro-Display-Regular.otf in Resources */,
+				6C1A838A2002EFC300E37F0A /* SF-Pro-Text-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,8 +347,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C1A839F2002F13A00E37F0A /* SignupVC.swift in Sources */,
 				6C1A836A2002EE3200E37F0A /* ViewController.swift in Sources */,
+				6C1A839B2002F10000E37F0A /* MenuVC.swift in Sources */,
+				6C1A83962002F0CF00E37F0A /* Extensions.swift in Sources */,
+				6C1A83A52002F23E00E37F0A /* MainVC.swift in Sources */,
+				6C1A83A12002F17200E37F0A /* GradientView.swift in Sources */,
 				6C1A83682002EE3200E37F0A /* AppDelegate.swift in Sources */,
+				6C1A839D2002F11A00E37F0A /* LoginVC.swift in Sources */,
+				6C1A83A32002F18A00E37F0A /* RoundedShadowButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,7 +497,7 @@
 				DEVELOPMENT_TEAM = 58B9M9NL9X;
 				INFOPLIST_FILE = UberClone/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "-com.appdelight.HTCHKRCODE";
+				PRODUCT_BUNDLE_IDENTIFIER = com.appdelight.HTCHKRCODE;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -388,7 +513,7 @@
 				DEVELOPMENT_TEAM = 58B9M9NL9X;
 				INFOPLIST_FILE = UberClone/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "-com.appdelight.HTCHKRCODE";
+				PRODUCT_BUNDLE_IDENTIFIER = com.appdelight.HTCHKRCODE;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
