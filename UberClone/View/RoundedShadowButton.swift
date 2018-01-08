@@ -22,10 +22,7 @@ class RoundedShadowButton: UIButton {
         originalSize = self.frame   //to capture the original size of the button
         setTitle("REQUEST RIDE", for: .normal)
         setTitleColor(UIColor.btnTextColor, for: .normal)
-        titleLabel?.font = UIFont(name: "SF-Pro-Display-Bold", size: 22)
-        //button.setAttributedTitle(NSMutableAttributedString(string: "REQUEST RIDE", attributes: [NSAttributedStringKey.font: UIFont(name: "SanFranciscoDisplay-Semibold" , size: 22) ?? .systemFont(ofSize: 22), NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .headline)]), for: .normal)
-        titleLabel?.font = UIFont.boldSystemFont(ofSize: 22)
-        
+        titleLabel?.font = UIFont(name: "SFProDisplay-Bold", size: 22)
         backgroundColor = .white
         layer.cornerRadius = 5
         layer.shadowRadius = 10.0

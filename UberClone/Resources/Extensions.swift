@@ -69,7 +69,7 @@ extension UITextField {
         clearButtonMode = UITextFieldViewMode.whileEditing;
         backgroundColor = .white
         borderStyle = borderstyle
-        font = UIFont.systemFont(ofSize: 16)
+        font = UIFont(name: "SFProText-Bold", size: 16)
         let indentView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 20))
         leftView = indentView
         leftViewMode = .always
