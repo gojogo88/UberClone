@@ -84,6 +84,7 @@ class LoginVC: UIViewController {
         button.layer.shadowColor = UIColor.shadowColor.cgColor
         button.layer.shadowOpacity = 0.3
         button.layer.shadowOffset = CGSize.zero
+        button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         return button
     }()
     
@@ -131,9 +132,13 @@ class LoginVC: UIViewController {
         stackView.anchor(top: nil, left: nil, bottom: loginButton.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 10, paddingRight: 0, width: 0, height: 0)
         stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
+    
+    @objc func handleLogin() {
+        
+    }
 }
 
-extension SignupVC: UITextFieldDelegate {
+extension LoginVC: UITextFieldDelegate {
     //hides keybaord when user touches outside of keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)

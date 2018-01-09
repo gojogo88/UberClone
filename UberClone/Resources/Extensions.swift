@@ -76,6 +76,36 @@ extension UITextField {
     }
 }
 
+extension UIButton {
+    func animateButton() {
+        let spinner = UIActivityIndicatorView()   //instantiate a spinner
+        spinner.activityIndicatorViewStyle = .whiteLarge
+        spinner.color = UIColor.btnTextColor
+        spinner.alpha = 0.0
+        spinner.hidesWhenStopped = true
+        spinner.tag = 21
+        
+        isUserInteractionEnabled = false
+        addSubview(spinner)
+            
+        setTitle("", for: .normal)
+        UIView.animate(withDuration: 0.4, animations: {   //animate the button into a circle
+            self.layer.cornerRadius = self.frame.height / 2
+            self.frame = CGRect(x: self.frame.midX - (self.frame.height / 2), y: self.frame.origin.y, width: self.frame.height, height: self.frame.height)
+        }, completion: { (finished) in
+            if finished == true {
+                spinner.startAnimating()
+                spinner.center = CGPoint(x: self.frame.width / 2 + 1, y: self.frame.width / 2 + 1)
+                    
+                spinner.fadeTo(alphaValue: 1.0, withDuration: 0.2)
+                    //UIView.animate(withDuration: 0.2, animations: {
+                    //    spinner.alpha = 1.0
+                    //})
+            }
+        })
+    }
+}
+
 extension Date {
     func timeAgoDisplay() -> String {
         let secondsAgo = Int(Date().timeIntervalSince(self))

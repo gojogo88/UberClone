@@ -187,6 +187,7 @@ class MainVC: UIViewController {
         inputContainer.addSubview(locTextField)
         locTextField.anchor(top: nil, left: locCircle.trailingAnchor, bottom: nil, right: inputContainer.trailingAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 35)
         locTextField.centerYAnchor.constraint(equalTo: locCircle.centerYAnchor).isActive = true
+        locTextField.delegate = self
         
         inputContainer.addSubview(dividingLine)
         dividingLine.anchor(top: locTextField.bottomAnchor, left: inputContainer.leadingAnchor, bottom: nil, right: inputContainer.trailingAnchor, paddingTop: 5, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 1)
@@ -197,6 +198,7 @@ class MainVC: UIViewController {
         inputContainer.addSubview(destTextField)
         destTextField.anchor(top: nil, left: destCircle.trailingAnchor, bottom: nil, right: inputContainer.trailingAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 0, height: 35)
         destTextField.centerYAnchor.constraint(equalTo: destCircle.centerYAnchor).isActive = true
+        destTextField.delegate = self
         
     }
     
@@ -223,5 +225,19 @@ class MainVC: UIViewController {
 }
 
 extension MainVC: MKMapViewDelegate {
+    
+}
+
+extension MainVC: UITextFieldDelegate {
+    //hides keybaord when user touches outside of keyboard
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    //hides keyboard when return key is pressed
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
     
 }
