@@ -72,31 +72,28 @@ class SignupVC: UIViewController {
         return pswd
     }()
     
-    let logintxt: UILabel = {
-        let txt = UILabel()
-        txt.text = "Already have an account? "
-        txt.font = UIFont(name: "SF-Pro-Text-Medium", size: 17.0)
-        txt.textColor = UIColor.logoBlack
-        return txt
+    let loginButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle(" Login here.", for: .normal)
+        button.titleLabel?.font = UIFont(name: "SFProText-Medium", size: 15)
+        button.setTitleColor(UIColor.logoOrange, for: .normal)
+        button.addTarget(self, action: #selector(handleShowLogin), for: .touchUpInside)
+        return button
     }()
     
-    let loginLinkBtn: UIButton = {
-        let attributes : [NSAttributedStringKey: Any] = [
-            NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17),
-            NSAttributedStringKey.foregroundColor : UIColor.logoBlack,
-            NSAttributedStringKey.underlineStyle : NSUnderlineStyle.styleSingle.rawValue]
-        
-        let attributeString = NSMutableAttributedString(string: "Login here", attributes: attributes)
-        let btn = UIButton(type: .system)
-        btn.setAttributedTitle(attributeString, for: .normal)
-        
-        return btn
+    let loginLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Already have an account?"
+        label.font = UIFont(name: "SFProText-Medium", size: 15)
+        label.textColor = UIColor.lightGray
+        label.textAlignment = .right
+        return label
     }()
     
     let signupButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.setTitle("SIGN UP", for: .normal)
-        btn.backgroundColor = UIColor.clear
+        btn.backgroundColor = UIColor.white
         btn.setTitleColor(UIColor.btnTextColor, for: .normal)
         btn.titleLabel?.font = UIFont(name: "SFProDisplay-Black", size: 22.0)
         btn.layer.cornerRadius = 5
@@ -128,26 +125,12 @@ class SignupVC: UIViewController {
         setupInputFields()
         emailField.delegate = self
         pswdField.delegate = self
-
-//        view.addSubview(segmentCtrl)
-//        segmentCtrl.anchor(top: descLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 330, height: 40)
-//        segmentCtrl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//
-//        view.addSubview(emailField)
-//        emailField.anchor(top: segmentCtrl.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 330, height: 50)
-//        emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        emailField.delegate = self
-//
-//        view.addSubview(pswdField)
-//        pswdField.anchor(top: emailField.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 330, height: 50)
-//        pswdField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        pswdField.delegate = self
         
         view.addSubview(signupButton)
         signupButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 0, width: 330, height: 60)
         signupButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        setupLogin()
+        setupLoginView()
     }
     
     fileprivate func setupInputFields() {
@@ -171,27 +154,15 @@ class SignupVC: UIViewController {
         
     }
     
-    fileprivate func setupLogin() {
-        let stackView = UIStackView(arrangedSubviews: [logintxt, loginLinkBtn])
+    fileprivate func setupLoginView() {
+        let stackView = UIStackView(arrangedSubviews: [loginLabel, loginButton])
         stackView.axis = .horizontal
-        stackView.distribution = .fill
-        stackView.alignment = .fill
+        stackView.distribution = .fillProportionally
         
         view.addSubview(stackView)
-        stackView.anchor(top: nil, left: nil, bottom: signupButton.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 10, paddingRight: 0, width: 0, height: 0)
-        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        stackView.anchor(top: nil, left: nil, bottom: signupButton.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
+        stackView.centerXAnchor.constraint(equalTo: signupButton.centerXAnchor).isActive = true
     }
-    
-//    func displayAlertMessage(alertTitle: String, messageToDisplay: String) {
-//        let alertController = UIAlertController(title: alertTitle, message: messageToDisplay, preferredStyle: .alert)
-//        
-//        let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
-//            // Code in this block will trigger when OK button tapped.
-//            print("Error transmitted")
-//        }
-//        alertController.addAction(OKAction)
-//        self.present(alertController, animated: true, completion:nil)
-//    }
     
     @objc func handleSignup() {
         guard let email = emailField.text else { return }
@@ -212,6 +183,8 @@ class SignupVC: UIViewController {
                     if success {
                         print("Passenger successfully added")
                         // stop animation, do segue
+                        let mainVC = MainVC()
+                        self.present(mainVC, animated: true, completion: nil)
                     }
                 })
             } else {
@@ -219,6 +192,8 @@ class SignupVC: UIViewController {
                     if success {
                         print("Driver successfully added")
                         // stop animation, do segue
+                        let menuVC = MenuVC()
+                        self.present(menuVC, animated: true, completion: nil)
                     }
                 })
             }
@@ -230,6 +205,11 @@ class SignupVC: UIViewController {
         imagePickerController.delegate = self
         imagePickerController.allowsEditing = true
         present(imagePickerController, animated: true)
+    }
+    
+    @objc func handleShowLogin() {
+        let loginVC = UINavigationController(rootViewController: LoginVC())
+        present(loginVC, animated: true)
     }
 }
 

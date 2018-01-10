@@ -52,25 +52,22 @@ class LoginVC: UIViewController {
         return pswd
     }()
     
-    let signuptxt: UILabel = {
-        let txt = UILabel()
-        txt.text = "Don't have an account yet? "
-        txt.font = UIFont(name: "SF-Pro-Text-Medium", size: 17.0)
-        txt.textColor = UIColor.logoBlack
-        return txt
+    let signupButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle(" Sign up here.", for: .normal)
+        button.titleLabel?.font = UIFont(name: "SFProText-Medium", size: 15)
+        button.setTitleColor(UIColor.logoOrange, for: .normal)
+        button.addTarget(self, action: #selector(handleShowSignup), for: .touchUpInside)
+        return button
     }()
     
-    let signupLinkBtn: UIButton = {
-        let attributes : [NSAttributedStringKey: Any] = [
-            NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17),
-            NSAttributedStringKey.foregroundColor : UIColor.logoBlack,
-            NSAttributedStringKey.underlineStyle : NSUnderlineStyle.styleSingle.rawValue]
-        
-        let attributeString = NSMutableAttributedString(string: "Sign up here", attributes: attributes)
-        let btn = UIButton(type: .system)
-        btn.setAttributedTitle(attributeString, for: .normal)
-        
-        return btn
+    let signupLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Don't have an account?"
+        label.font = UIFont(name: "SFProText-Medium", size: 15)
+        label.textColor = UIColor.lightGray
+        label.textAlignment = .right
+        return label
     }()
     
     let loginButton: UIButton = {
@@ -119,22 +116,40 @@ class LoginVC: UIViewController {
         loginButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 20, paddingRight: 0, width: 330, height: 60)
         loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        setupSignup()
+        setupSignupView()
     }
     
-    fileprivate func setupSignup() {
-        let stackView = UIStackView(arrangedSubviews: [signuptxt, signupLinkBtn])
+    fileprivate func setupSignupView() {
+        let stackView = UIStackView(arrangedSubviews: [signupLabel, signupButton])
         stackView.axis = .horizontal
-        stackView.distribution = .fill
-        stackView.alignment = .fill
+        stackView.distribution = .fillProportionally
         
         view.addSubview(stackView)
-        stackView.anchor(top: nil, left: nil, bottom: loginButton.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 10, paddingRight: 0, width: 0, height: 0)
-        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        stackView.anchor(top: nil, left: nil, bottom: loginButton.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
+        stackView.centerXAnchor.constraint(equalTo: loginButton.centerXAnchor).isActive = true
     }
     
     @objc func handleLogin() {
+        guard let email = emailField.text else { return }
+        guard let password = pswdField.text else { return }
         
+        if email.isEmpty || password.isEmpty {
+            let alert = Alert()
+            alert.displayAlertMessage(alertTitle: "Empty Field(s)", messageToDisplay: "Please fill in all fields.", vc: self)
+        } else {
+            //signupButton.animateButton()
+            self.view.endEditing(true)
+            DataService.instance.loginUser(email: email, password: password, vc: self, completion: { (success) in
+                if success {
+                    let menuVC = MenuVC()
+                    self.present(menuVC, animated: true, completion: nil)
+                }
+            })
+        }
+    }
+    
+    @objc func handleShowSignup() {
+        dismiss(animated: true, completion: nil)
     }
 }
 

@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import Firebase
 
 class MenuVC: UIViewController {
-    
+
+    let currentUserId = Auth.auth().currentUser?.uid
+
     let headerBG: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.darkGray
@@ -61,10 +64,15 @@ class MenuVC: UIViewController {
         btn.setTitle("Sign Up / Login", for: .normal)
         btn.titleLabel?.font = UIFont(name: "SFProDisplay-Bold", size: 24.0)
         btn.setTitleColor(UIColor.darkGray, for: .normal)
+        btn.addTarget(self, action: #selector(handleLoginLogout), for: .touchUpInside)
         return btn
     }()
 
-    let pickupSwitch = UISwitch()
+    let pickupSwitch: UISwitch = {
+        let pickup = UISwitch()
+        pickup.addTarget(self, action: #selector(handleSwitchToggle), for: .touchUpInside)
+        return pickup
+    }()
     
     let pickupModeLabel: UILabel = {
         let lbl = UILabel()
@@ -74,17 +82,14 @@ class MenuVC: UIViewController {
         return lbl
     }()
 
-    let profilePic: UIImageView = {
-        let img = UIImageView()
-        img.image = UIImage(named: "sample-photo")
-        img.layer.cornerRadius = 40 / 2
-        img.clipsToBounds = true
-        return img
+    let profilePic: CustomImageView = {
+        let iv = CustomImageView()
+        return iv
     }()
     
     let emailLabel: UILabel = {
         let lbl = UILabel()
-        lbl.text = "email@email.com"
+        lbl.text = ""
         lbl.font = UIFont(name: "SFProText-Regular", size: 16.0)
         lbl.textColor = UIColor.btnTextColor
         return lbl
@@ -92,12 +97,22 @@ class MenuVC: UIViewController {
     
     let acctTypeLabel: UILabel = {
         let lbl = UILabel()
-        lbl.text = "Account Type"
+        lbl.text = ""
         lbl.font = UIFont(name: "SFProText-Bold", size: 14.0)
         lbl.textColor = UIColor.btnTextColor
         return lbl
     }()
     
+    var user: User? {
+        didSet {
+            guard let profileImageUrl = user?.profileImageUrl else { return }
+            profilePic.loadImage(urlString: profileImageUrl)
+            acctTypeLabel.text = (user?.userIsDriver)! ? "Driver" : "Passenger"
+            pickupModeLabel.text = (user?.isPickUpModeEnabled)! ? "PICK UP MODE ENABLED" : "PICK UP MODE DISABLED"
+            
+            //setupEditFollowButton()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,6 +132,36 @@ class MenuVC: UIViewController {
         login.anchor(top: nil, left: view.leadingAnchor, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 20, paddingRight: 0, width: 0, height: 0)
     
         setupAcctInfo()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        pickupSwitch.isOn = false
+        pickupSwitch.isHidden = true
+        pickupModeLabel.isHidden = true
+        
+        if currentUserId == nil {
+            emailLabel.text = ""
+            profilePic.isHidden = true
+            acctTypeLabel.text = ""
+        } else {
+            login.setTitle("Log Out", for: .normal)
+            DataService.instance.userProfile(uid: currentUserId!) { (user) in
+                self.user = user
+                
+                self.emailLabel.text = Auth.auth().currentUser?.email
+                self.profilePic.isHidden = false
+                
+                if self.acctTypeLabel.text == "Driver" {
+                    self.pickupModeLabel.isHidden = false
+                    self.pickupSwitch.isHidden = false
+                    self.pickupSwitch.isOn = (user.isPickUpModeEnabled)!
+                }
+            }
+            
+        }
+        
     }
     
     fileprivate func setupMenu() {
@@ -139,11 +184,44 @@ class MenuVC: UIViewController {
         
         view.addSubview(profilePic)
         profilePic.anchor(top: nil, left: view.leadingAnchor, bottom: emailLabel.topAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 5, paddingRight: 0, width: 40, height: 40)
+        profilePic.layer.cornerRadius = 40/2
+        profilePic.layer.masksToBounds = true
         
         view.addSubview(pickupModeLabel)
         pickupModeLabel.anchor(top: nil, left: view.leadingAnchor, bottom: profilePic.topAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 15, paddingRight: 0, width: 0, height: 0)
         
         view.addSubview(pickupSwitch)
         pickupSwitch.anchor(top: nil, left: view.leadingAnchor, bottom: pickupModeLabel.topAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 4, paddingRight: 0, width: 0, height: 0)
+    }
+    
+    @objc func handleLoginLogout() {
+        if Auth.auth().currentUser == nil {
+            let signUpVC = SignupVC()
+            navigationController?.popToRootViewController(animated: true)
+        } else {
+            do {
+                try Auth.auth().signOut()
+                pickupSwitch.isHidden = true
+                pickupModeLabel.isHidden = true
+                emailLabel.text = ""
+                profilePic.isHidden = true
+                acctTypeLabel.text = ""
+                login.setTitle("Sign Up / Login", for: .normal)
+                let signUpVC = SignupVC()
+                navigationController?.popToRootViewController(animated: true)
+            } catch (let error) {
+                print(error)
+            }
+        }
+    }
+    
+    @objc func handleSwitchToggle() {
+        if pickupSwitch.isOn {
+            pickupModeLabel.text = "PICKUP MODE ENABLED"
+            DataService.instance.REF_DRIVERS.child(currentUserId!).updateChildValues(["isPickUpModeEnabled" : true])
+        } else {
+            pickupModeLabel.text = "PICKUP MODE DISABLED"
+            DataService.instance.REF_DRIVERS.child(currentUserId!).updateChildValues(["isPickUpModeEnabled" : false])
+        }
     }
 }

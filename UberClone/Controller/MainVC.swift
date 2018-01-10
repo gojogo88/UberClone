@@ -20,7 +20,7 @@ class MainVC: UIViewController {
     
     let menuBtn: UIButton = {
         let btn = UIButton(type: .system)
-        btn.setImage(#imageLiteral(resourceName: "menuSliderBtn"), for: .normal)
+        btn.setImage(#imageLiteral(resourceName: "menuSliderBtn").withRenderingMode(.alwaysOriginal), for: .normal)
         return btn
     }()
     
