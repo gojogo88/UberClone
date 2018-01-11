@@ -8,10 +8,17 @@
 
 import UIKit
 import MapKit
+import CoreLocation
+import Firebase
 
 class MainVC: UIViewController {
 
+    var manager: CLLocationManager?
     
+    var regionRadius: CLLocationDistance = 1000
+    
+    let currentUserId = Auth.auth().currentUser?.uid
+
     let headerBG: UIView = {
         let view = UIView()
         view.backgroundColor = .yellow
@@ -82,8 +89,6 @@ class MainVC: UIViewController {
         return view
     }()
     
-    //lazy var myLocCircle: UIView = self.setupLocCircles(with: UIColor.myLocColor, borderColor: UIColor.myLocBorderColor.cgColor)
-    
     let locTextField: UITextField = {
         let tf = UITextField()
         tf.setupTF(with: "My Location", keyboardType: .default, borderstyle: .none, isSecureText: false)
@@ -101,8 +106,6 @@ class MainVC: UIViewController {
         view.backgroundColor = UIColor.btnTextColor
         return view
     }()
-    
-    
     
     let requestBtnContainer: UIView = {
         let view = UIView()
@@ -127,6 +130,7 @@ class MainVC: UIViewController {
     let centerbtn: UIButton = {
         let btn = UIButton(type: .system)
         btn.setImage(#imageLiteral(resourceName: "centerMapBtn").withRenderingMode(.alwaysOriginal), for: .normal)
+        btn.addTarget(self, action: #selector(handleCenterMapBtn), for: .touchUpInside)
         return btn
     }()
 
@@ -134,7 +138,15 @@ class MainVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        manager = CLLocationManager()
+        manager?.delegate = self
+        manager?.desiredAccuracy = kCLLocationAccuracyBest
+
         mapView.delegate = self
+        
+        checkLocationAuthStatus()
+        
+        centerMapOnUserLocation()
 
         view.addSubview(headerBG)
         headerBG.anchor(top: view.topAnchor, left: view.leadingAnchor, bottom: nil, right: view.trailingAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 130)
@@ -160,6 +172,19 @@ class MainVC: UIViewController {
             }
         }
         
+    }
+    
+    fileprivate func checkLocationAuthStatus() {
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+            manager?.startUpdatingLocation()
+        } else {
+            manager?.requestWhenInUseAuthorization()
+        }
+    }
+    
+    fileprivate func centerMapOnUserLocation() {
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(mapView.userLocation.coordinate, regionRadius * 2.0, regionRadius * 2.0)
+        mapView.setRegion(coordinateRegion, animated: true)
     }
     
     fileprivate func setupHeaderStack() {
@@ -212,20 +237,45 @@ class MainVC: UIViewController {
         
     }
 
-//    fileprivate func setupLocCircles(with color: UIColor, borderColor: CGColor) -> UIView {
-//        let view = UIView()
-//        view.frame = CGRect(x: 0, y: 0, width: 16, height: 16)
-//        view.layer.borderWidth = 1.5
-//        view.backgroundColor = color
-//        view.layer.cornerRadius = view.frame.width / 2
-//        view.layer.borderColor = borderColor
-//        return view
-//    }
+    @objc func handleCenterMapBtn() {
+        centerMapOnUserLocation()
+    }
     
 }
 
 extension MainVC: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+        DataService.instance.REF_USERS.observeSingleEvent(of: .value) { (snapshot) in
+            if let userSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+            for user in userSnapshot {
+                if user.key == self.currentUserId {
+                    UpdateService.instance.updateUserLocation(withCoordinate: userLocation.coordinate, uid: self.currentUserId!)
+                }
+            }
+            UpdateService.instance.updateDriverLocation(withCoordinate: userLocation.coordinate, uid: self.currentUserId!)
+            }
+        }
+    }
+}
+
+extension MainVC: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse {
+            mapView.showsUserLocation = true
+            mapView.userTrackingMode = .follow
+        }
+    }
     
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let annotation = annotation as? DriverAnnotation {
+            let identifier = "driver"
+            var view: MKAnnotationView
+            view = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            view.image = UIImage(named: "driverAnnotation")
+            return view
+        }
+        return nil
+    }
 }
 
 extension MainVC: UITextFieldDelegate {

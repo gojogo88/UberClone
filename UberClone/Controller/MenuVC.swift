@@ -196,7 +196,7 @@ class MenuVC: UIViewController {
     
     @objc func handleLoginLogout() {
         if Auth.auth().currentUser == nil {
-            let signUpVC = SignupVC()
+            //let signUpVC = SignupVC()
             navigationController?.popToRootViewController(animated: true)
         } else {
             do {
@@ -207,7 +207,7 @@ class MenuVC: UIViewController {
                 profilePic.isHidden = true
                 acctTypeLabel.text = ""
                 login.setTitle("Sign Up / Login", for: .normal)
-                let signUpVC = SignupVC()
+                //let signUpVC = SignupVC()
                 navigationController?.popToRootViewController(animated: true)
             } catch (let error) {
                 print(error)

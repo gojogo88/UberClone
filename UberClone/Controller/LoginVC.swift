@@ -87,6 +87,7 @@ class LoginVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.isNavigationBarHidden = true
         
         view.addSubview(bgImg)
         bgImg.anchor(top: view.topAnchor, left: view.leadingAnchor, bottom: view.bottomAnchor, right: view.trailingAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -119,6 +120,11 @@ class LoginVC: UIViewController {
         setupSignupView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+    
     fileprivate func setupSignupView() {
         let stackView = UIStackView(arrangedSubviews: [signupLabel, signupButton])
         stackView.axis = .horizontal
@@ -141,15 +147,17 @@ class LoginVC: UIViewController {
             self.view.endEditing(true)
             DataService.instance.loginUser(email: email, password: password, vc: self, completion: { (success) in
                 if success {
-                    let menuVC = MenuVC()
-                    self.present(menuVC, animated: true, completion: nil)
+                    let mainVC = MainVC()
+                    self.navigationController?.pushViewController(mainVC, animated: true)
+                    //self.present(menuVC, animated: true, completion: nil)
                 }
             })
         }
     }
     
     @objc func handleShowSignup() {
-        dismiss(animated: true, completion: nil)
+        navigationController?.popToRootViewController(animated: true)
+        //dismiss(animated: true, completion: nil)
     }
 }
 

@@ -59,5 +59,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>HTCHKR needs your location so our drivers can find you.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>HTCHKR needs your location so our drivers can find you.</string>
 </dict>
 </plist>

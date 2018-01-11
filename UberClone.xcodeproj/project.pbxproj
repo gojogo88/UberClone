@@ -36,6 +36,8 @@
 		6C1A83A72002F9CA00E37F0A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C1A83A62002F9CA00E37F0A /* MapKit.framework */; };
 		6C1A83AA2003177800E37F0A /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1A83A92003177800E37F0A /* DataService.swift */; };
 		6C1A83AD200317CC00E37F0A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1A83AC200317CC00E37F0A /* Constants.swift */; };
+		6CE29BCF2006EFD90058ADFE /* UpdateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE29BCE2006EFD90058ADFE /* UpdateService.swift */; };
+		6CE29BD12007252E0058ADFE /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE29BD02007252E0058ADFE /* DriverAnnotation.swift */; };
 		6CF067A52004945700EED833 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF067A42004945700EED833 /* Alert.swift */; };
 		BF8D72C1524B8677C2E0CB67 /* Pods_UberClone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED9D21CE2D8787DD40968617 /* Pods_UberClone.framework */; };
 /* End PBXBuildFile section */
@@ -73,6 +75,8 @@
 		6C1A83A62002F9CA00E37F0A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		6C1A83A92003177800E37F0A /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		6C1A83AC200317CC00E37F0A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		6CE29BCE2006EFD90058ADFE /* UpdateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateService.swift; sourceTree = "<group>"; };
+		6CE29BD02007252E0058ADFE /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnotation.swift; sourceTree = "<group>"; };
 		6CF067A42004945700EED833 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		E241D99D5E71CE890C9C0176 /* Pods-UberClone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UberClone.release.xcconfig"; path = "Pods/Target Support Files/Pods-UberClone/Pods-UberClone.release.xcconfig"; sourceTree = "<group>"; };
 		ED9D21CE2D8787DD40968617 /* Pods_UberClone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UberClone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,6 +177,7 @@
 			children = (
 				6C1A83A02002F17200E37F0A /* GradientView.swift */,
 				6C1064E52005A0770073C067 /* CustomImageView.swift */,
+				6CE29BD02007252E0058ADFE /* DriverAnnotation.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -189,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				6C1A83A92003177800E37F0A /* DataService.swift */,
+				6CE29BCE2006EFD90058ADFE /* UpdateService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -379,8 +385,10 @@
 				6C1A839F2002F13A00E37F0A /* SignupVC.swift in Sources */,
 				6C1064E62005A0770073C067 /* CustomImageView.swift in Sources */,
 				6C1A83AD200317CC00E37F0A /* Constants.swift in Sources */,
+				6CE29BD12007252E0058ADFE /* DriverAnnotation.swift in Sources */,
 				6C1A836A2002EE3200E37F0A /* ViewController.swift in Sources */,
 				6C1A839B2002F10000E37F0A /* MenuVC.swift in Sources */,
+				6CE29BCF2006EFD90058ADFE /* UpdateService.swift in Sources */,
 				6C1A83962002F0CF00E37F0A /* Extensions.swift in Sources */,
 				6C1A83A52002F23E00E37F0A /* MainVC.swift in Sources */,
 				6C1A83A12002F17200E37F0A /* GradientView.swift in Sources */,

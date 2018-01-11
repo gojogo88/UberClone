@@ -107,6 +107,7 @@ class SignupVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.isNavigationBarHidden = true
         
         view.addSubview(bgImg)
         bgImg.anchor(top: view.topAnchor, left: view.leadingAnchor, bottom: view.bottomAnchor, right: view.trailingAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -131,6 +132,11 @@ class SignupVC: UIViewController {
         signupButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         setupLoginView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
     }
     
     fileprivate func setupInputFields() {
@@ -183,8 +189,11 @@ class SignupVC: UIViewController {
                     if success {
                         print("Passenger successfully added")
                         // stop animation, do segue
+                        self.emailField.text = ""
+                        self.pswdField.text = ""
                         let mainVC = MainVC()
-                        self.present(mainVC, animated: true, completion: nil)
+                        self.navigationController?.pushViewController(mainVC, animated: true)
+                        //self.present(mainVC, animated: true, completion: nil)
                     }
                 })
             } else {
@@ -192,8 +201,11 @@ class SignupVC: UIViewController {
                     if success {
                         print("Driver successfully added")
                         // stop animation, do segue
-                        let menuVC = MenuVC()
-                        self.present(menuVC, animated: true, completion: nil)
+                        self.emailField.text = ""
+                        self.pswdField.text = ""
+                        let mainVC = MainVC()
+                        self.navigationController?.pushViewController(mainVC, animated: true)
+                        //self.present(menuVC, animated: true, completion: nil)
                     }
                 })
             }
@@ -208,8 +220,9 @@ class SignupVC: UIViewController {
     }
     
     @objc func handleShowLogin() {
-        let loginVC = UINavigationController(rootViewController: LoginVC())
-        present(loginVC, animated: true)
+        let loginVC = LoginVC()
+        navigationController?.pushViewController(loginVC, animated: true)
+        //resent(loginVC, animated: true)
     }
 }
 
