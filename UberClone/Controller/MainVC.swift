@@ -342,6 +342,18 @@ class MainVC: UIViewController {
         requestBtn.centerXAnchor.constraint(equalTo: requestBtnContainer.centerXAnchor).isActive = true
         
     }
+    
+    func clearExistingLocations() {
+        DataService.instance.REF_USERS.child(currentUserId!).child("tripCoordinate").removeValue()
+        mapView.removeOverlays(mapView.overlays)
+        for annotation in mapView.annotations {
+            if let annotation = annotation as? MKPointAnnotation {
+                mapView.removeAnnotation(annotation)
+            } else if annotation.isKind(of: PassengerAnnotation.self) {
+                mapView.removeAnnotation(annotation)
+            }
+        }
+    }
 
     @objc func handleMenuBtn() {
         let menuVC = MenuVC()
@@ -529,6 +541,18 @@ extension MainVC: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         matchingItems = []
         tableView.reloadData()
+        
+        clearExistingLocations()
+//        DataService.instance.REF_USERS.child(currentUserId).child("tripCoordinate").removeValue()
+//        mapView.removeOverlays(mapView.overlays)
+//        for annotation in mapView.annotations {
+//            if let annotation = annotation as? MKPointAnnotation {
+//                mapView.removeAnnotation(annotation)
+//            } else if annotation.isKind(of: PassengerAnnotation.self) {
+//                mapView.removeAnnotation(annotation)
+//            }
+//        }
+        
         animateTableView(shouldShow: false)
         centerMapOnUserLocation()
         return true
@@ -574,6 +598,7 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        clearExistingLocations()
         shouldPresentLoadingView(true)
         
         let passengerCoordinate = manager?.location?.coordinate
