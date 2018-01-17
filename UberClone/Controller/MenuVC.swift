@@ -27,6 +27,13 @@ class MenuVC: UIViewController {
         return lbl
     }()
     
+    let closeBtn: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setImage(#imageLiteral(resourceName: "menuSliderBtn").withRenderingMode(.alwaysOriginal), for: .normal)
+        btn.addTarget(self, action: #selector(handleCloseBtn), for: .touchUpInside)
+        return btn
+    }()
+    
     let payments: UIButton = {
         let btn = UIButton(type: .system)
         btn.setTitle("Payments", for: .normal)
@@ -126,6 +133,10 @@ class MenuVC: UIViewController {
         menuTitle.anchor(top: nil, left: headerBG.leadingAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         menuTitle.centerYAnchor.constraint(equalTo: headerBG.centerYAnchor).isActive = true
         
+        headerBG.addSubview(closeBtn)
+        closeBtn.anchor(top: nil, left: nil, bottom: nil, right: headerBG.trailingAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+        closeBtn.centerYAnchor.constraint(equalTo: headerBG.centerYAnchor).isActive = true
+        
         setupMenu()
         
         view.addSubview(login)
@@ -192,6 +203,12 @@ class MenuVC: UIViewController {
         
         view.addSubview(pickupSwitch)
         pickupSwitch.anchor(top: nil, left: view.leadingAnchor, bottom: pickupModeLabel.topAnchor, right: nil, paddingTop: 0, paddingLeft: 20, paddingBottom: 4, paddingRight: 0, width: 0, height: 0)
+    }
+    
+    @objc func handleCloseBtn() {
+        
+        _ = navigationController?.popViewController(animated: true)
+        
     }
     
     @objc func handleLoginLogout() {

@@ -14,3 +14,6 @@ typealias CompletionHandler = (_ Success: Bool) -> ()
 //URL Constants
 let DB_BASE = Database.database().reference()
 
+let LOCATION_CELL = "locationCell"
+let DESTINATION = "destination"
+

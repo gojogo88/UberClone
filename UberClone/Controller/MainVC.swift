@@ -18,6 +18,12 @@ class MainVC: UIViewController {
     var regionRadius: CLLocationDistance = 1000
     
     let currentUserId = Auth.auth().currentUser?.uid
+    
+    var tableView = UITableView()
+    
+    var matchingItems = [MKMapItem]()
+    
+    var selectedItemPlacemark: MKPlacemark? = nil
 
     let headerBG: UIView = {
         let view = UIView()
@@ -28,6 +34,7 @@ class MainVC: UIViewController {
     let menuBtn: UIButton = {
         let btn = UIButton(type: .system)
         btn.setImage(#imageLiteral(resourceName: "menuSliderBtn").withRenderingMode(.alwaysOriginal), for: .normal)
+        btn.addTarget(self, action: #selector(handleMenuBtn), for: .touchUpInside)
         return btn
     }()
     
@@ -143,6 +150,7 @@ class MainVC: UIViewController {
         manager?.desiredAccuracy = kCLLocationAccuracyBest
 
         mapView.delegate = self
+        destTextField.delegate = self
         
         checkLocationAuthStatus()
         
@@ -151,7 +159,7 @@ class MainVC: UIViewController {
         DataService.instance.REF_DRIVERS.observe(.value) { (snapshot) in
             self.loadDriverAnnotationsFromDB()
         }
-
+        //loadDrivers()
         
         view.addSubview(headerBG)
         headerBG.anchor(top: view.topAnchor, left: view.leadingAnchor, bottom: nil, right: view.trailingAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 130)
@@ -187,6 +195,50 @@ class MainVC: UIViewController {
         }
     }
     
+//    func loadDrivers() {
+//        DataService.instance.REF_DRIVERS.observe(.value) { (snapshot) in
+//            guard let driverSnapshot = snapshot.children.allObjects as? [DataSnapshot] else { return }
+//            for driver in driverSnapshot {
+//                //if driver.hasChild("coordinate") {
+//                    if driver.childSnapshot(forPath: "isPickUpModeEnabled").value as? Bool == true {
+//                        if let driverDict = driver.value as? [String: Any] {
+//                            let coordinateArray = driverDict["coordinate"] as! NSArray
+//                            let driverCoordinate = CLLocationCoordinate2D(latitude: coordinateArray[0] as! CLLocationDegrees, longitude: coordinateArray[1] as! CLLocationDegrees)
+//
+//                            let annotation = DriverAnnotation(coordinate: driverCoordinate, withKey: driver.key)
+//
+//                            var driverIsVisible: Bool {
+//                                return self.mapView.annotations.contains(where: { (annotation) -> Bool in
+//                                    if let driverAnnotation = annotation as? DriverAnnotation {
+//                                        if driverAnnotation.key == driver.key {
+//                                            driverAnnotation.update(annotaionPosition: driverAnnotation, withCoordinate: driverCoordinate)
+//                                            return true
+//                                        }
+//                                    }
+//                                    return false
+//                                })
+//                            }
+//                            if !driverIsVisible {
+//                                self.mapView.addAnnotation(annotation)
+//                            }
+//                        }
+////                    } else {
+////                        for annotation in self.mapView.annotations {
+////                            if annotation.isKind(of: DriverAnnotation.self) {
+////                                if let annotation = annotation as? DriverAnnotation {
+////                                    if annotation.key == driver.key {
+////                                        self.mapView.removeAnnotation(annotation)
+////                                    }
+////                                }
+////                            }
+////                        }
+//                    }
+//               // }
+//            }
+//
+//        }
+//    }
+    
     fileprivate func loadDriverAnnotationsFromDB() {
         DataService.instance.REF_DRIVERS.observeSingleEvent(of: .value) { (snapshot) in
             if let driverSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
@@ -197,10 +249,10 @@ class MainVC: UIViewController {
                                 if let driverDict = driver.value as? Dictionary<String, AnyObject> {
                                     let coordinateArray = driverDict["coordinate"] as! NSArray
                                     let driverCoordinate = CLLocationCoordinate2D(latitude: coordinateArray[0] as! CLLocationDegrees, longitude: coordinateArray[1] as! CLLocationDegrees)
-                                    
+
                                     let annotation = DriverAnnotation(coordinate: driverCoordinate, withKey: driver.key)
-                                    
-                                    
+
+
                                     var driverIsVisible: Bool {
                                         return self.mapView.annotations.contains(where: { (annotation) -> Bool in
                                             if let driverAnnotation = annotation as? DriverAnnotation {
@@ -289,8 +341,14 @@ class MainVC: UIViewController {
         
     }
 
+    @objc func handleMenuBtn() {
+        let menuVC = MenuVC()
+        navigationController?.pushViewController(menuVC, animated: true)
+    }
+    
     @objc func handleCenterMapBtn() {
         centerMapOnUserLocation()
+        centerbtn.fadeTo(alphaValue: 0.0, withDuration: 0.2)
     }
     
 }
@@ -308,6 +366,42 @@ extension MainVC: MKMapViewDelegate {
             }
         }
     }
+    
+    func performSearch() {
+        matchingItems.removeAll()
+        let request = MKLocalSearchRequest()
+        request.naturalLanguageQuery = destTextField.text
+        request.region = mapView.region
+        
+        let search = MKLocalSearch(request: request)
+        
+        search.start { (response, error) in
+            if error != nil {
+                print(error.debugDescription)
+            } else if response!.mapItems.count == 0 {
+                print("No results")
+            } else {
+                for mapItem in response!.mapItems {
+                    self.matchingItems.append(mapItem as MKMapItem)
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+
+    func dropPinFor(placemark: MKPlacemark) {
+        selectedItemPlacemark = placemark
+        
+        for annotation in mapView.annotations {
+            if annotation.isKind(of: MKPointAnnotation.self) {
+                mapView.removeAnnotation(annotation)
+            }
+        }
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = placemark.coordinate
+        mapView.addAnnotation(annotation)
+    }
+    
 }
 
 extension MainVC: CLLocationManagerDelegate {
@@ -325,8 +419,27 @@ extension MainVC: CLLocationManagerDelegate {
             view = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             view.image = UIImage(named: "driverAnnotation")
             return view
+        } else if let annotation  = annotation as? PassengerAnnotation {
+            let identifier = "passenger"
+            var view: MKAnnotationView
+            view = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            view.image = UIImage(named: "currentLocationAnnotation")
+            return view
+        } else if let annotation = annotation as? MKPointAnnotation {
+            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: DESTINATION)
+            if annotationView == nil {
+                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: DESTINATION)
+            } else {
+                annotationView?.annotation = annotation
+            }
+            annotationView?.image = UIImage(named: "destinationAnnotation")
+            return annotationView
         }
         return nil
+    }
+    
+    func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+        centerbtn.fadeTo(alphaValue: 1.0, withDuration: 0.2)
     }
 }
 
@@ -338,8 +451,118 @@ extension MainVC: UITextFieldDelegate {
     
     //hides keyboard when return key is pressed
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+        if textField == destTextField {
+            performSearch()
+            view.endEditing(true)
+        }
+        //textField.resignFirstResponder()
         return true
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        if textField == destTextField {
+            tableView.frame = CGRect(x: 20, y: view.frame.height, width: view.frame.width - 40, height: view.frame.height - 190)
+            tableView.layer.cornerRadius = 5.0
+            tableView.register(UITableViewCell.self, forCellReuseIdentifier: LOCATION_CELL)
+        
+            tableView.delegate = self
+            tableView.dataSource = self
+        
+            tableView.tag = 18
+            tableView.rowHeight = 60
+        
+            view.addSubview(tableView)
+            animateTableView(shouldShow: true)
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                self.destCircle.backgroundColor = .red
+                self.destCircle.backgroundColor = UIColor.darkRed
+            })
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == destTextField {
+            if destTextField.text == "" {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.destCircle.backgroundColor = UIColor.myDestColor
+                    self.destCircle.backgroundColor = UIColor.myDestBorderColor
+                })
+            }
+        }
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        matchingItems = []
+        tableView.reloadData()
+        animateTableView(shouldShow: false)
+        centerMapOnUserLocation()
+        return true
+    }
+    
+    func animateTableView(shouldShow: Bool) {
+        if shouldShow {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.tableView.frame = CGRect(x: 20, y: 190, width: self.view.frame.width - 40, height: self.view.frame.height - 190)
+
+            })
+        } else {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.tableView.frame = CGRect(x: 20, y: self.view.frame.height, width: self.view.frame.width - 40, height: self.view.frame.height - 190)
+            }, completion: { (finished) in
+                for subview in self.view.subviews {
+                    if subview.tag == 18 {
+                        subview.removeFromSuperview()
+                    }
+                }
+            })
+        }
+    }
+    
+}
+
+extension MainVC: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return matchingItems.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: LOCATION_CELL)
+        let mapItem = matchingItems[indexPath.row]
+        cell.textLabel?.text = mapItem.name
+        cell.detailTextLabel?.text = mapItem.placemark.title
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let passengerCoordinate = manager?.location?.coordinate
+        
+        let passengerAnnotation = PassengerAnnotation(coordinate: passengerCoordinate!, key: currentUserId!)
+        mapView.addAnnotation(passengerAnnotation)
+        
+        destTextField.text = tableView.cellForRow(at: indexPath)?.textLabel?.text
+        
+        let selectedMapItem = matchingItems[indexPath.row]
+        DataService.instance.REF_USERS.child(currentUserId!).updateChildValues(["tripCoordinate":[selectedMapItem.placemark.coordinate.latitude, selectedMapItem.placemark.coordinate.longitude]])
+        
+        dropPinFor(placemark: selectedMapItem.placemark)
+        
+        animateTableView(shouldShow: false)
+        print("row selected")
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        view.endEditing(true)
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if destTextField.text == "" {
+            animateTableView(shouldShow: false)
+        }
+    }
 }

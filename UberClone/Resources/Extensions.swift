@@ -17,7 +17,7 @@ extension UIColor {
     static let myDestColor = UIColor(named: "myDestColor")!
     static let myDestBorderColor = UIColor(named: "myDestBorderColor")!
     static let btnTextColor = UIColor(named: "btnTextColor")!
-    
+    static let darkRed = UIColor(named: "darkRed")!
 }
 
 extension UIView {
