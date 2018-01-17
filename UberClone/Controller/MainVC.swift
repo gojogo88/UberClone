@@ -395,6 +395,7 @@ extension MainVC: MKMapViewDelegate {
                 for mapItem in response!.mapItems {
                     self.matchingItems.append(mapItem as MKMapItem)
                     self.tableView.reloadData()
+                    self.shouldPresentLoadingView(false)
                 }
             }
         }
@@ -428,6 +429,8 @@ extension MainVC: MKMapViewDelegate {
             }
             self.route = response.routes[0]
             self.mapView.add(self.route.polyline)
+            
+            self.shouldPresentLoadingView(false)
         }
     }
     
@@ -482,6 +485,7 @@ extension MainVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == destTextField {
             performSearch()
+            shouldPresentLoadingView(true)
             view.endEditing(true)
         }
         //textField.resignFirstResponder()
@@ -569,6 +573,9 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        shouldPresentLoadingView(true)
+        
         let passengerCoordinate = manager?.location?.coordinate
         
         let passengerAnnotation = PassengerAnnotation(coordinate: passengerCoordinate!, key: currentUserId!)
