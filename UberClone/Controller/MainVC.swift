@@ -23,6 +23,8 @@ class MainVC: UIViewController {
     
     var matchingItems = [MKMapItem]()
     
+    var route: MKRoute!
+    
     var selectedItemPlacemark: MKPlacemark? = nil
 
     let headerBG: UIView = {
@@ -367,6 +369,15 @@ extension MainVC: MKMapViewDelegate {
         }
     }
     
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let lineRenderer = MKPolylineRenderer(overlay: self.route.polyline)
+        lineRenderer.strokeColor = UIColor.logoOrange
+        lineRenderer.lineWidth = 3
+        lineRenderer.lineCap = .round
+        
+        return lineRenderer
+    }
+    
     func performSearch() {
         matchingItems.removeAll()
         let request = MKLocalSearchRequest()
@@ -400,6 +411,24 @@ extension MainVC: MKMapViewDelegate {
         let annotation = MKPointAnnotation()
         annotation.coordinate = placemark.coordinate
         mapView.addAnnotation(annotation)
+    }
+    
+    func searchMapKitForResultsWithPolyline(forMapItem mapItem: MKMapItem) {
+        let request = MKDirectionsRequest()
+        request.source = MKMapItem.forCurrentLocation()
+        request.destination = mapItem
+        request.transportType = MKDirectionsTransportType.automobile
+        
+        let directions = MKDirections(request: request)
+        
+        directions.calculate { (response, error) in
+            guard let response = response else {
+                print(error.debugDescription)
+                return
+            }
+            self.route = response.routes[0]
+            self.mapView.add(self.route.polyline)
+        }
     }
     
 }
@@ -551,6 +580,7 @@ extension MainVC: UITableViewDataSource, UITableViewDelegate {
         DataService.instance.REF_USERS.child(currentUserId!).updateChildValues(["tripCoordinate":[selectedMapItem.placemark.coordinate.latitude, selectedMapItem.placemark.coordinate.longitude]])
         
         dropPinFor(placemark: selectedMapItem.placemark)
+        searchMapKitForResultsWithPolyline(forMapItem: selectedMapItem)
         
         animateTableView(shouldShow: false)
         print("row selected")
