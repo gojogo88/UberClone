@@ -361,6 +361,22 @@ class MainVC: UIViewController {
     }
     
     @objc func handleCenterMapBtn() {
+        DataService.instance.REF_USERS.observeSingleEvent(of: .value) { (snapshot) in
+            if let userSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                for user in userSnapshot {
+                    if user.key == self.currentUserId! {
+                        if user.hasChild("tripCoordinate") {
+                            self.zoon(toFitAnnotationsFromMapView: self.mapView)
+                            self.centerbtn.fadeTo(alphaValue: 0.0, withDuration: 0.3)
+                        } else {
+                            self.centerMapOnUserLocation()
+                            self.centerbtn.fadeTo(alphaValue: 0.0, withDuration: 0.3)
+                        }
+                    }
+                }
+            }
+        }
+        
         centerMapOnUserLocation()
         centerbtn.fadeTo(alphaValue: 0.0, withDuration: 0.2)
     }
@@ -386,6 +402,8 @@ extension MainVC: MKMapViewDelegate {
         lineRenderer.strokeColor = UIColor.logoOrange
         lineRenderer.lineWidth = 3
         lineRenderer.lineCap = .round
+        
+        zoon(toFitAnnotationsFromMapView: self.mapView)
         
         return lineRenderer
     }
@@ -444,6 +462,27 @@ extension MainVC: MKMapViewDelegate {
             
             self.shouldPresentLoadingView(false)
         }
+    }
+    
+    func zoon(toFitAnnotationsFromMapView mapView: MKMapView) {
+        if mapView.annotations.count == 0 {
+            return
+        }
+        
+        var topLeftCoordinate = CLLocationCoordinate2D(latitude: -90, longitude: 180)
+        var bottomRightCoordinate = CLLocationCoordinate2D(latitude: 90, longitude: -180)
+        
+        for annotation in mapView.annotations where !annotation.isKind(of: DriverAnnotation.self) {
+            topLeftCoordinate.longitude = fmin(topLeftCoordinate.longitude, annotation.coordinate.longitude)
+            topLeftCoordinate.latitude = fmax(topLeftCoordinate.latitude, annotation.coordinate.latitude)
+            bottomRightCoordinate.longitude = fmax(bottomRightCoordinate.longitude, annotation.coordinate.longitude)
+            bottomRightCoordinate.latitude = fmin(bottomRightCoordinate.latitude, annotation.coordinate.latitude)
+        }
+        
+        var region = MKCoordinateRegion(center: CLLocationCoordinate2DMake(topLeftCoordinate.latitude - (topLeftCoordinate.latitude - bottomRightCoordinate.latitude) * 0.5, topLeftCoordinate.longitude + (bottomRightCoordinate.longitude - topLeftCoordinate.longitude) * 0.5), span: MKCoordinateSpan(latitudeDelta: fabs(topLeftCoordinate.latitude - bottomRightCoordinate.latitude) * 2.0, longitudeDelta: fabs(bottomRightCoordinate.longitude - topLeftCoordinate.longitude) * 2.0))
+    
+        region = mapView.regionThatFits(region)
+        mapView.setRegion(region, animated: true)
     }
     
 }
