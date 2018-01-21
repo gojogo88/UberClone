@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginVC: UIViewController {
+class LoginVC: UIViewController, Alertable {
     
     let bgImg: UIImageView = {
         let bg = UIImageView()
@@ -140,8 +140,9 @@ class LoginVC: UIViewController {
         guard let password = pswdField.text else { return }
         
         if email.isEmpty || password.isEmpty {
-            let alert = Alert()
-            alert.displayAlertMessage(alertTitle: "Empty Field(s)", messageToDisplay: "Please fill in all fields.", vc: self)
+            showAlert("Empty Field(s)", msg: "Please fill in all fields.")
+            //let alert = Alert()
+            //alert.displayAlertMessage(alertTitle: "Empty Field(s)", messageToDisplay: "Please fill in all fields.", vc: self)
         } else {
             //signupButton.animateButton()
             self.view.endEditing(true)

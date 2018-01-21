@@ -11,7 +11,7 @@ import MapKit
 import CoreLocation
 import Firebase
 
-class MainVC: UIViewController {
+class MainVC: UIViewController, Alertable {
 
     var manager: CLLocationManager?
     
@@ -133,6 +133,7 @@ class MainVC: UIViewController {
         btn.layer.shadowColor = UIColor.shadowColor.cgColor
         btn.layer.shadowOpacity = 0.3
         btn.layer.shadowOffset = CGSize.zero
+        btn.addTarget(self, action: #selector(handleRequestBtn), for: .touchUpInside)
         return btn
     }()
     
@@ -178,6 +179,26 @@ class MainVC: UIViewController {
         view.addSubview(centerbtn)
         centerbtn.anchor(top: nil, left: nil, bottom: requestBtnContainer.topAnchor, right: requestBtn.trailingAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 0, width: 60, height: 60)
         
+        UpdateService.instance.observeTrips { (tripDict) in
+            if let tripDict = tripDict {
+                let pickupCoordinateArray = tripDict["pickupCoordinate"] as! NSArray
+                let tripKey = tripDict["passengerKey"] as! String
+                let acceptanceStatus = tripDict["tripIsAccepted"] as! Bool
+                
+                if acceptanceStatus == false {
+                    DataService.instance.driverIsAvailable(key: self.currentUserId!, handler: { (available) in
+                        if available! {
+                            if available == true {
+                                let pickupVC = PickupVC()
+                                pickupVC.initData(coordinate: CLLocationCoordinate2D(latitude: pickupCoordinateArray[0] as! CLLocationDegrees, longitude: pickupCoordinateArray[1] as! CLLocationDegrees), passengerKey: tripKey)
+                                self.present(pickupVC, animated: true, completion: nil)
+
+                            }
+                        }
+                    })
+                }
+            }
+        }
         
         for family: String in UIFont.familyNames {
             print("\(family)")
@@ -360,6 +381,12 @@ class MainVC: UIViewController {
         navigationController?.pushViewController(menuVC, animated: true)
     }
     
+    @objc func handleRequestBtn() {
+        UpdateService.instance.updateTripsWithCoordinateUponRequest()
+        self.view.endEditing(true)
+        destTextField.isUserInteractionEnabled = false
+    }
+    
     @objc func handleCenterMapBtn() {
         DataService.instance.REF_USERS.observeSingleEvent(of: .value) { (snapshot) in
             if let userSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
@@ -418,8 +445,10 @@ extension MainVC: MKMapViewDelegate {
         
         search.start { (response, error) in
             if error != nil {
+                self.showAlert("Error", msg: error as! String)
                 print(error.debugDescription)
             } else if response!.mapItems.count == 0 {
+                self.showAlert("No Results", msg: "Please search again for a different location.")
                 print("No results")
             } else {
                 for mapItem in response!.mapItems {
@@ -454,6 +483,7 @@ extension MainVC: MKMapViewDelegate {
         
         directions.calculate { (response, error) in
             guard let response = response else {
+                self.showAlert("Error", msg: error.debugDescription)
                 print(error.debugDescription)
                 return
             }

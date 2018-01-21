@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         
-        let signupVC = SignupVC(nibName: nil, bundle: nil)
+        let signupVC = PickupVC(nibName: nil, bundle: nil)
         let navController = UINavigationController(rootViewController: signupVC)
         window = UIWindow()
         window?.rootViewController = navController
